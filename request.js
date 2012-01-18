@@ -10,5 +10,5 @@ var contents = document.body.innerHTML;
 			isbns.push(contents[x]);
 			}
 		}
-	isbns = unique(isbns);
+isbns = unique(isbns);
 chrome.extension.sendRequest({isbns: isbns});
