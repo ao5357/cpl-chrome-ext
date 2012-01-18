@@ -1,0 +1,16 @@
+{
+	"name": "Canton Public Library Catalog",
+	"version": "1.1",
+	"description": "Searches the page you're on for ISBNs and checks to see if they're in the Canton Public Library catalog.",
+	"icons": {"128": "icon_128.png"},
+	"browser_action": {
+		"default_icon": "icon.png",
+		"default_title": "CPL Catalog",
+		"popup": "popup.html"
+		},
+	"permissions": [
+		"tabs",
+		"http://*/*",
+		"https://*/*"
+		]
+}
