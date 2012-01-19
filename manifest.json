@@ -9,10 +9,13 @@
 	},
 "default_locale": "en_US",
 "background": {
-	"scripts": ["omnibox.js"]
+	"scripts": ["background.js"]
 	},
 "content_scripts": [{
-	"matches": ["http://*","https://*"],
+	"matches": [
+		"http://*/*",
+		"https://*/*"
+		],
 	"js": ["notifications.js"],
 	"exclude_globs": ["*cantonpl*"]
 	}],
