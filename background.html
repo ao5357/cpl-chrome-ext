@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html><head><script>
+function showNotification(notifBody){
+	var notifLoc = chrome.extension.getURL("notification.hmtl");
+	var notification = window.webkitNotifications.createHTMLNotification(notifLoc);
+	notification.show();
+	}
+
+chrome.extension.onRequest.addListener(function(request,sender,sendResponse){
+	if(request.isbns[0]){
+		var notifIcon = chrome.extension.getURL("icon48.png");
+		var notifTitle = chrome.i18n.getMessage("notificationBrief");
+		var testNotif = request.isbns.join();
+			testNotif += notifIcon + notifTitle;
+		showNotification(testNotif);
+		}
+	});
+</script></head></html>
