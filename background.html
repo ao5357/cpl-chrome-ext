@@ -1,18 +1,32 @@
 <!DOCTYPE html>
 <html><head><script>
-function showNotification(notifBody){
-	var notifLoc = chrome.extension.getURL("notification.hmtl");
+window.notificationData = new Array();
+
+window.getStampedBody = function(notifStamp){
+	return window.notificationData[notifStamp];
+	};
+
+function showNotification(notifStamp){
+	var notifLoc = chrome.extension.getURL("notification.html") + '#' + notifStamp;
 	var notification = window.webkitNotifications.createHTMLNotification(notifLoc);
+	notification.onclose = function(){
+		delete window.notificationData[notifStamp];
+		};
 	notification.show();
+	}
+
+function notifConstructor(isbns){
+	var notifIcon = chrome.extension.getURL("icon48.png");
+	var notifTitle = chrome.i18n.getMessage("notificationBrief");
+	return '<img class="icon" src="' + notifIcon + '" /><strong>' + notifTitle + '</strong><p>This is the message body.</p>';
 	}
 
 chrome.extension.onRequest.addListener(function(request,sender,sendResponse){
 	if(request.isbns[0]){
-		var notifIcon = chrome.extension.getURL("icon48.png");
-		var notifTitle = chrome.i18n.getMessage("notificationBrief");
+		var notifStamp = new Date().getTime();
 		var testNotif = request.isbns.join();
-			testNotif += notifIcon + notifTitle;
-		showNotification(testNotif);
+		window.notificationData[notifStamp] = notifConstructor(testNotif);
+		showNotification(notifStamp);
 		}
 	});
 </script></head></html>

@@ -2,7 +2,14 @@
 <html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Notification</title>
-<style></style>
+<style>
+	body{background:#ffffcc;}
+</style>
+<script>
+	var notifStamp = Location.hash.substr(1);
+	var notifBody = chrome.extension.getBackgroundPage().getStampedBody(notifStamp);
+	body.innerHTML = notifBody;
+</script>
 </head><body>
 <h1>This is an HTML Notification</h1>
 <p>I wonder what Brad has in store for me!</p>
