@@ -11,4 +11,4 @@ for(x in contents){
 		}
 	}
 isbns = unique(isbns);
-
+chrome.extension.sendRequest({isbns: isbns});
