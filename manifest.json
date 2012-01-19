@@ -1,16 +1,24 @@
 {
-	"name": "Canton Public Library Catalog",
-	"version": "1.1",
-	"description": "Searches the page you're on for ISBNs and checks to see if they're in the Canton Public Library catalog.",
-	"icons": {"128": "icon_128.png"},
-	"browser_action": {
-		"default_icon": "icon.png",
-		"default_title": "CPL Catalog",
-		"popup": "popup.html"
+	"name": "__MSG_extensionName__",
+	"version": "2.0.0.0",
+	"description": "__MSG_extensionDescription__",
+	"icons": {
+		"16": "icon16.png",
+		"48": "icon48.png",
+		"128": "icon128.png"
 		},
+	"default_locale": "en_US",
+	"background": {
+		"scripts": ["omnibox.js"]
+		},
+	"content_scripts": [{
+		"matches": ["http*"],
+		"js": ["notifications.js"],
+		"exclude_globs": ["*cantonpl*"]
+		}],
+	"homepage_url": "http://www.cantonpl.org/tools",
+	"omnibox": { "keyword" : "__MSG_searchKeyword__" },
 	"permissions": [
-		"tabs",
-		"http://*/*",
-		"https://*/*"
+		"notifications"
 		]
 }
