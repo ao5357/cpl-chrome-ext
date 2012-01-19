@@ -12,7 +12,7 @@
 	"scripts": ["omnibox.js"]
 	},
 "content_scripts": [{
-	"matches": ["http*"],
+	"matches": ["http://*","https://*"],
 	"js": ["notifications.js"],
 	"exclude_globs": ["*cantonpl*"]
 	}],
