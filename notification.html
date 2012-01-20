@@ -3,14 +3,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Notification</title>
 <style>
-	body{background:#ffffcc;}
+	body{background:#fff;color:#888;font-family:sans-serif;font-size:11pt;}
+	.icon{float:left;margin:0 5px 0 0;}
 </style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script>
-	var notifStamp = Location.hash.substr(1);
-	var notifBody = chrome.extension.getBackgroundPage().getStampedBody(notifStamp);
-	body.innerHTML = notifBody;
+jQuery(document).ready(function($){
+	var notifStamp = window.location.hash.substr(1);
+	notifBody = chrome.extension.getBackgroundPage().notificationData[notifStamp];
+	document.body.innerHTML = notifBody;
+
+	$("body").click(function(e){
+		var clickTarget = $(e.target);
+		if(!clickTarget.is("a")){
+			clickTarget = clickTarget.parents("a");
+			}
+		if(clickTarget.attr("href")){
+			chrome.tabs.create({url: clickTarget.attr("href"),selected: false});
+			}
+		});
+});
 </script>
 </head><body>
-<h1>This is an HTML Notification</h1>
-<p>I wonder what Brad has in store for me!</p>
+<img src="ajax-loader.gif" class="icon" alt="" /> Loading message...
 </body></html>

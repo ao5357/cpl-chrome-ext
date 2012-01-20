@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<html><head><script>
+<html><head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script>
 window.notificationData = new Array();
-
-window.getStampedBody = function(notifStamp){
-	return window.notificationData[notifStamp];
-	};
 
 function showNotification(notifStamp){
 	var notifLoc = chrome.extension.getURL("notification.html") + '#' + notifStamp;
@@ -12,19 +10,22 @@ function showNotification(notifStamp){
 	notification.onclose = function(){
 		delete window.notificationData[notifStamp];
 		};
+	notification.onerror = function(){
+		delete window.notificationData[notifStamp];
+		};
 	notification.show();
 	}
 
 function notifConstructor(isbns){
-	var notifIcon = chrome.extension.getURL("icon48.png");
+	var notifIcon = chrome.extension.getURL("icon16.png");
 	var notifTitle = chrome.i18n.getMessage("notificationBrief");
-	return '<img class="icon" src="' + notifIcon + '" /><strong>' + notifTitle + '</strong><p>This is the message body.</p>';
+	return '<img class="icon" src="' + notifIcon + '" /><strong>' + notifTitle + '</strong><p>This is the <a target="_blank" href="http://www.cantonpl.org/">message</a> body.</p>';
 	}
 
 chrome.extension.onRequest.addListener(function(request,sender,sendResponse){
 	if(request.isbns[0]){
 		var notifStamp = new Date().getTime();
-		var testNotif = request.isbns.join();
+		var testNotif = request.isbns.join();console.log(testNotif);
 		window.notificationData[notifStamp] = notifConstructor(testNotif);
 		showNotification(notifStamp);
 		}
