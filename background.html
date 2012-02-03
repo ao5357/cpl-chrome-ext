@@ -58,11 +58,11 @@ chrome.omnibox.onInputChanged.addListener(function(text,suggest){
 	clearTimeout(t);
 	var defaultSuggestion = (text.length >= 4) ? {description: document.searchingSuggestion + ": <match>%s</match>"} : {description: document.defaultSuggestion};
 	chrome.omnibox.setDefaultSuggestion(defaultSuggestion);
-	
+
 	t = setTimeout(function(){
 		if(text.length >= 4){
 		var results = new Array();
-		$.getJSON('http://www.cantonpl.org/apis/cat.php?type=t&sort=t&callback=?',{q: text},function(data){
+		$.getJSON('http://www.cantonpl.org/apis/cat.php?type=t&callback=?',{q: text},function(data){
 			delete data.type;
 			$.each(data,function(i,item){
 				var title = item.title, openBrace = title.indexOf('['), slash = title.indexOf('/');
