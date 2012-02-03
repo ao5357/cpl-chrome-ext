@@ -1,14 +1,37 @@
-function unique(a){a.sort();for(var i = 1;i < a.length;){if(a[i-1] == a[i]){a.splice(i,1);}else{i++;}}return a;}
-function validateISBN(a){a=a.toString();if(a.length==10){var b=0;var c=a.charAt(9);if(c=='x'||c=='X'){c=10}var i=0;while(i<=8){b=b+(a.charAt(i)*(10-i));i++}b=b+(c*1);if((b%11)==0){return true}else{return false}}else if(a.length==13){var b=0;var c=(a.charAt(12)*1);if(c==0){c=10}var i=0;while(i<=11){j=i+1;if(j%2==0){b=b+(a.charAt(i)*3)}else{b=b+(a.charAt(i)*1)}i++}b=b%10;b=10-b;if(b==c){return true}else{return false}}else{return false}}
+// ISBN validator: http://jsfiddle.net/ao5357/kcN2f/
+String.prototype.valI = function(){var a=this,b=0,i=0,l=a.length;if(l==10){var c=a[9]=='X'?10:a[9]*1;for(i;i<9;i++){b+=a[i]*(10-i)}return (b+c)%11==0?a:0}if(l==13){var c=a[12]==0?10:a[12]*1;for(i;i<12;i++){b+=(i+1)%2==0?a[i]*3:a[i]*1}return 10-(b%10)==c?a:0}};
 
-var isbns = new Array();
-var contents = document.body.innerHTML;
-	contents = contents.replace(/[\- \.]/ig,"");
-	contents = contents.match(/(97[89][0-9]{10}|[0-9]{10}|[0-9]{9}[xX])/ig);
-for(x in contents){
-	if(validateISBN(contents[x])){
-		isbns.push(contents[x]);
+// sort descending: takes original order into account [as much as possible]
+function sortProps(a,b){
+	var c = b.weight - a.weight;
+	return (c == 0) ? b.index - a.index : c;
+	}
+// object to array -> sort -> return top result
+function flipSort(obj){
+	var objArr = new Array(), isbnArr = new Array(), index = 0;
+	for(var i in obj){objArr.push({isbn: i,weight: obj[i],index: index});index++;}
+	objArr.sort(sortProps);
+	isbnArr.push(objArr[0].isbn);
+	return isbnArr;
+	}
+
+// find isbn-like numbers on the page
+var isbns = new Object(), contents = document.body.innerHTML;
+contents = contents.replace(/[\- \.]/ig,"");
+contents = contents.match(/(97[89][0-9]{10}|[0-9]{10}|[0-9]{9}[xX])/ig);
+for(var i in contents){
+	if(contents[i].valI() && !isbns[contents[i]]){
+		isbns[contents[i]] = 1;
+		}
+	else if(contents[i].valI() && isbns[contents[i]]){
+		isbns[contents[i]]++;
 		}
 	}
-isbns = unique(isbns);
-chrome.extension.sendRequest({isbns: isbns});
+
+// send top result if there is one and it's worthwhile (English zoned)
+if(Object.keys(isbns).length >= 1){
+	var flipped = String(flipSort(isbns)[0]);
+	if(flipped[0] == 0 || flipped[0] == 1 || flipped.length == 13){
+		chrome.extension.sendRequest({isbn: flipped});
+		}
+	}

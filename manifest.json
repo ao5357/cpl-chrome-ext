@@ -19,8 +19,5 @@
 	}],
 "homepage_url": "http://www.cantonpl.org/tools",
 "omnibox": { "keyword" : "__MSG_searchKeyword__" },
-"permissions": [
-	"notifications",
-	"tabs"
-	]
+"permissions": ["notifications","tabs"]
 }
