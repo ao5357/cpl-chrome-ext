@@ -7,6 +7,9 @@ jQuery(document).ready(function($){
 window.notificationData = new Array();
 document.notifIcon = chrome.extension.getURL("icon16.png");
 document.notifTitle = chrome.i18n.getMessage("notificationBrief");
+document.defaultSuggestion = chrome.i18n.getMessage("defaultSuggestion");
+document.searchingSuggestion = chrome.i18n.getMessage("searchingSuggestion");
+document.resultsSuggestion = chrome.i18n.getMessage("resultsSuggestion");
 
 // builds an HTML5 notification bound to a hash
 function showNotification(notifStamp){
@@ -53,7 +56,7 @@ chrome.extension.onRequest.addListener(function(request,sender,sendResponse){
 var t = 0;
 chrome.omnibox.onInputChanged.addListener(function(text,suggest){
 	clearTimeout(t);
-	var defaultSuggestion = (text.length >= 4) ? {description: "Finding suggestions for: <match>%s</match>"} : {description: "Title search suggestions as you type"};
+	var defaultSuggestion = (text.length >= 4) ? {description: document.searchingSuggestion + ": <match>%s</match>"} : {description: document.defaultSuggestion};
 	chrome.omnibox.setDefaultSuggestion(defaultSuggestion);
 	
 	t = setTimeout(function(){
@@ -68,16 +71,21 @@ chrome.omnibox.onInputChanged.addListener(function(text,suggest){
 				var description = title + " — <url>" + bar + "</url>";
 				results.push({content: bar, description: description});
 				});
-			chrome.omnibox.setDefaultSuggestion({description: "CPL title results for: <match>%s</match>"});
+			chrome.omnibox.setDefaultSuggestion({description: document.resultsSuggestion + ": <match>%s</match>"});
 			suggest(results);
 			});
 			}
 		},300);
 	});
 
-chrome.omnibox.onInputEntered.addListener(function(url){
+chrome.omnibox.onInputEntered.addListener(function(text){
 	chrome.tabs.getSelected(null,function(tab){
-		chrome.tabs.update(tab.id,{url: url});
+		if(text.substr(0,6) == "http://"){
+			chrome.tabs.update(tab.id,{url: text});
+			}
+		else{
+			chrome.tabs.update(tab.id,{url: "http://catalog.cantonpl.org/search/X" + encodeURIComponent(text)});
+			}
 		});
 	});
 });
