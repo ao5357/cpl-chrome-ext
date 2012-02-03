@@ -65,7 +65,7 @@ chrome.omnibox.onInputChanged.addListener(function(text,suggest){
 		$.getJSON('http://www.cantonpl.org/apis/cat.php?type=t&callback=?',{q: text},function(data){
 			delete data.type;
 			$.each(data,function(i,item){
-				var title = item.title, openBrace = title.indexOf('['), slash = title.indexOf('/');
+				var title = $("<div/>").text(item.title).html(), openBrace = title.indexOf('['), slash = title.indexOf('/');
 					if(openBrace == -1 && slash >= 1){title = title.substr(0,slash);}
 					else if(slash == -1 && openBrace >= 1){title = title.substr(0,openBrace);}
 					else if(slash >= 1 && openBrace >= 1 && openBrace < slash){title = title.substr(0,openBrace);}
