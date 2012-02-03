@@ -66,7 +66,10 @@ chrome.omnibox.onInputChanged.addListener(function(text,suggest){
 			delete data.type;
 			$.each(data,function(i,item){
 				var title = item.title, openBrace = title.indexOf('['), slash = title.indexOf('/');
-					title = (openBrace >= 1 && slash >= 1 && openBrace < slash) ? title.substr(0,openBrace) : title.substr(0,slash);
+					if(openBrace == -1 && slash >= 1){title = title.substr(0,slash);}
+					else if(slash == -1 && openBrace >= 1){title = title.substr(0,openBrace);}
+					else if(slash >= 1 && openBrace >= 1 && openBrace < slash){title = title.substr(0,openBrace);}
+					else if(slash >= 1 && openBrace >= 1 && slash < openBrace){title = title.substr(0,slash);}
 				var bar = "http://catalog.cantonpl.org/record=" + item.bnum;
 				var description = title + " — <url>" + bar + "</url>";
 				results.push({content: bar, description: description});
@@ -80,7 +83,7 @@ chrome.omnibox.onInputChanged.addListener(function(text,suggest){
 
 chrome.omnibox.onInputEntered.addListener(function(text){
 	chrome.tabs.getSelected(null,function(tab){
-		if(text.substr(0,6) == "http://"){
+		if(text.substr(0,7) == "http://"){
 			chrome.tabs.update(tab.id,{url: text});
 			}
 		else{
