@@ -2,7 +2,7 @@
 "extensionName": {"message": "Canton Public Library Catalog"},
 "extensionDescription": {"message": "Integrates CPL Catalog search"},
 "searchKeyword": {"message": "cpl"},
-"notificationBrief": {"message": "Books you may have viewed:"},
+"notificationBrief": {"message": "Book you may have viewed:"},
 "defaultSuggestion": {"message": "Title search suggestions as you type"},
 "searchingSuggestion": {"message": "Finding suggestions for"},
 "resultsSuggestion": {"message": "CPL title results for"}
