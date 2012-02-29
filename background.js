@@ -72,7 +72,7 @@ chrome.omnibox.onInputChanged.addListener(function(text,suggest){
 					else if(slash >= 1 && openBrace >= 1 && openBrace < slash){title = title.substr(0,openBrace);}
 					else if(slash >= 1 && openBrace >= 1 && slash < openBrace){title = title.substr(0,slash);}
 				var bar = "http://catalog.cantonpl.org/record=" + item.bnum;
-				var description = title + " — <url>" + bar + "</url>";
+				var description = title + " <url>" + bar + "</url>";
 				results.push({content: bar, description: description});
 				});
 			chrome.omnibox.setDefaultSuggestion({description: document.resultsSuggestion + ": <match>%s</match>"});

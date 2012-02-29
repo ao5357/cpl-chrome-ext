@@ -9,7 +9,7 @@
 	"128": "icon128.png"
 	},
 "default_locale": "en_US",
-"background": {"page": ["background.html"]},
+"background": {"page": "background.html"},
 "content_scripts": [{
 	"matches": [
 		"http://*/*",
