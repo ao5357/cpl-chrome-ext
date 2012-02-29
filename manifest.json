@@ -1,6 +1,7 @@
 {
 "name": "__MSG_extensionName__",
-"version": "2.0.0.0",
+"manifest_version": 2,
+"version": "2.1.0.0",
 "description": "__MSG_extensionDescription__",
 "icons": {
 	"16": "icon16.png",
@@ -8,16 +9,16 @@
 	"128": "icon128.png"
 	},
 "default_locale": "en_US",
-"background_page": "background.html",
+"background": {"page": ["background.html"]},
 "content_scripts": [{
 	"matches": [
 		"http://*/*",
 		"https://*/*"
 		],
-	"js": ["notifications.js"],
+	"js": ["content-script.js"],
 	"exclude_globs": ["*cantonpl*"]
 	}],
 "homepage_url": "http://www.cantonpl.org/tools",
-"omnibox": { "keyword" : "__MSG_searchKeyword__" },
+"omnibox": {"keyword" : "__MSG_searchKeyword__"},
 "permissions": ["notifications","tabs"]
 }
