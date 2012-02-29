@@ -20,12 +20,12 @@ function showNotification(notifStamp){
 
 // query exact and edition ISBNs for CPL holdings
 function cplQuery(isbn,notifStamp){
-	$.getJSON('http://www.cantonpl.org/apis/cat.php?type=i&callback=?',{q: isbn},function(data){
+	$.getJSON('https://www.cantonpl.org/apis/cat.php?type=i&callback=?',{q: isbn},function(data){
 			window.notificationData[notifStamp] = resultFormatter(data["0"]);
 			showNotification(notifStamp);
 			})
 		.error(function(){
-			$.getJSON('http://www.cantonpl.org/apis/frbr.php?callback=?',{i: isbn,results: 1},function(data){
+			$.getJSON('https://www.cantonpl.org/apis/frbr.php?callback=?',{i: isbn,results: 1},function(data){
 					window.notificationData[notifStamp] = resultFormatter(data["0"]);
 					showNotification(notifStamp);
 				});
@@ -63,7 +63,7 @@ chrome.omnibox.onInputChanged.addListener(function(text,suggest){
 	t = setTimeout(function(){
 		if(text.length >= 4){
 		var results = new Array();
-		$.getJSON('http://www.cantonpl.org/apis/cat.php?type=t&callback=?',{q: text},function(data){
+		$.getJSON('https://www.cantonpl.org/apis/cat.php?type=t&callback=?',{q: text},function(data){
 			delete data.type;
 			$.each(data,function(i,item){
 				var title = $("<div/>").text(item.title).html(), openBrace = title.indexOf('['), slash = title.indexOf('/');

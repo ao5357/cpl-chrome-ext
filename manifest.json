@@ -18,6 +18,7 @@
 	"js": ["content-script.js"],
 	"exclude_globs": ["*cantonpl*"]
 	}],
+"content_security_policy": "script-src 'self' https://ajax.googleapis.com https://www.cantonpl.org; object-src 'self'",
 "homepage_url": "http://www.cantonpl.org/tools",
 "omnibox": {"keyword" : "__MSG_searchKeyword__"},
 "permissions": ["notifications","tabs"]
