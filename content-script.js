@@ -16,24 +16,26 @@ function flipSort(obj){
 	}
 
 // find isbn-like numbers on the page
-var isbns = new Object(), contents = document.body.innerHTML, badMatches = ["0000000000","0123456789"];
-contents = contents.replace(/[\- \.]/ig,"");
-contents = contents.match(/(97[89][0-9]{10}|[01][0-9]{9}|[01][0-9]{8}[xX])/ig);
-for(var i in contents){
-	if(v(contents[i]) && !isbns[contents[i]] && badMatches.indexOf(contents[i]) == -1){
-		isbns[contents[i]] = 1;
+if(location.hostname.slice(-12) !== "cantonpl.org"){
+	var isbns = new Object(), contents = document.body.innerHTML, badMatches = ["0000000000","0123456789"];
+	contents = contents.replace(/[\- \.]/ig,"");
+	contents = contents.match(/(97[89][0-9]{10}|[01][0-9]{9}|[01][0-9]{8}[xX])/ig);
+	for(var i in contents){
+		if(v(contents[i]) && !isbns[contents[i]] && badMatches.indexOf(contents[i]) == -1){
+			isbns[contents[i]] = 1;
+			}
+		else if(v(contents[i]) && isbns[contents[i]]){
+			isbns[contents[i]]++;
+			}
 		}
-	else if(v(contents[i]) && isbns[contents[i]]){
-		isbns[contents[i]]++;
-		}
-	}
 
-// send top result if there is one and it's worthwhile (English zoned)
-if(Object.keys(isbns).length >= 1 && location.hostname.slice(-12) !== "cantonpl.org"){
-	var flipped = String(flipSort(isbns)[0]);
-	chrome.extension.sendRequest({isbn: flipped});
+	// send top result if there is one and it's worthwhile (English zoned)
+	if(Object.keys(isbns).length >= 1){
+		var flipped = String(flipSort(isbns)[0]);
+		chrome.extension.sendRequest({isbn: flipped});
+		}
 	}
-else if(location.hostname.slice(-12) === "cantonpl.org"){
+else{
 	var actionBar = document.getElementById("action-bar");
 	var chromeButton = document.getElementById('chrome-extension');
 	actionBar.removeChild(chromeButton);
