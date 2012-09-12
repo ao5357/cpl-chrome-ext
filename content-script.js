@@ -36,7 +36,5 @@ if(location.hostname.slice(-12) !== "cantonpl.org"){
 		}
 	}
 else{
-	var actionBar = document.getElementById("action-bar");
-	var chromeButton = document.getElementById('chrome-extension');
-	actionBar.removeChild(chromeButton);
+	localStorage.setItem("cpl-extension-installed","true");
 	}
