@@ -29,7 +29,12 @@ for(var i in contents){
 	}
 
 // send top result if there is one and it's worthwhile (English zoned)
-if(Object.keys(isbns).length >= 1){
+if(Object.keys(isbns).length >= 1 && location.hostname.slice(-12) !== "cantonpl.org"){
 	var flipped = String(flipSort(isbns)[0]);
 	chrome.extension.sendRequest({isbn: flipped});
+	}
+else if(location.hostname.slice(-12) === "cantonpl.org"){
+	var actionBar = document.getElementById("action-bar");
+	var chromeButton = document.getElementById('chrome-extension');
+	actionBar.removeChild(chromeButton);
 	}
